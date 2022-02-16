@@ -1,0 +1,26 @@
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand mr-auto"href="#">Blockchain Encuesta</a>
+  <!--Paso 2. Mostrar el formulario de nueva encuesta al clickear-->
+  <button type="button"
+  class="btn btn-secondary"
+  (click) = "showForm = !showForm"
+  >Crear Encuesta</button>
+</nav>
+
+<section class = "jumpotron bg-light text-center">
+  <h1>Listado de encuestas</h1>
+  <p class = "lead text-muted">Desarrollado con Blockchain</p>
+</section>
+
+<app-poll-create *ngIf = "showForm"></app-poll-create>
+
+<div class="d-flex">
+  <!--Mostrando la lista de encuestas -->
+  <div class = "container poll-list">
+    <app-poll></app-poll>
+  </div>
+  <!--Mostrando el detalle de la encuesta-->
+  <div class = "container poll-detail">
+    Detalle
+  </div>
+</div>
