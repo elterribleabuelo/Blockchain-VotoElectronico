@@ -18,15 +18,16 @@
   <!--Mostrando la lista de encuestas -->
   <div class = "container poll-list">
     <!--Recogemos poll desde app.component.ts -->
-    <app-poll *ngFor = "let poll of polls"
-    [question] = "poll.question"
-    [pollImage] = "poll.image"
-    [voted] = "poll.voted"
-    [votes] = "poll.votes"
+    <app-poll
+      *ngFor = "let poll of polls"
+        [question] = "poll.question"
+        [pollImage] = "poll.image"
+        [voted] = "poll.voted"
+        [votes] = "poll.votes"
     ></app-poll>
   </div>
   <!--Mostrando el detalle de la encuesta-->
   <div class = "container poll-detail">
-    Detalle
+    <app-poll-vote></app-poll-vote>
   </div>
 </div>
