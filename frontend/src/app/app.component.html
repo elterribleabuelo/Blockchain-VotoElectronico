@@ -17,7 +17,13 @@
 <div class="d-flex">
   <!--Mostrando la lista de encuestas -->
   <div class = "container poll-list">
-    <app-poll></app-poll>
+    <!--Recogemos poll desde app.component.ts -->
+    <app-poll *ngFor = "let poll of polls"
+    [question] = "poll.question"
+    [pollImage] = "poll.image"
+    [voted] = "poll.voted"
+    [votes] = "poll.votes"
+    ></app-poll>
   </div>
   <!--Mostrando el detalle de la encuesta-->
   <div class = "container poll-detail">

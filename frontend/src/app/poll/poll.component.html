@@ -1,16 +1,16 @@
 <div class="card mb-4">
   <div class = "poll-image">
-    <img src="https://images.pexels.com/photos/7527363/pexels-photo-7527363.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" />
+    <img [src] = "pollImage" />
   </div>
 
   <div class="card-body">
-    <p class="card-text text-truncate font-weight-bold">
-      ¿Te gustan más los gatos o perros?
+    <p class="card-text font-weight-bold">
+      {{question}}   <!--desde poll.component.ts-->
     </p>
 
     <div class="d-flex justify-content-between">
-      <small class = "text-muted">10 votos</small>
-      <small class = "text-muted">voto</small>
+      <small class = "text-muted">Votos: {{ numberOfVotes }}</small>  <!--desde poll.component.ts-->
+      <small *ngIf = "voted" class = "badge badge-success">voto</small>
     </div>
   </div>
 </div>
