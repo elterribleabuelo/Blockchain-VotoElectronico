@@ -16,6 +16,7 @@ export interface Poll{
   results:number[];
   options:string[];
   thumbnail:string;
+  voted:boolean
 }
 
 // Interfaz para el votante

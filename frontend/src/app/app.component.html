@@ -15,19 +15,31 @@
 <app-poll-create *ngIf = "showForm"></app-poll-create>
 
 <div class="d-flex">
+
   <!--Mostrando la lista de encuestas -->
   <div class = "container poll-list">
     <!--Recogemos poll desde app.component.ts -->
+     <!--Polls viene desde app.component-->
     <app-poll
-      *ngFor = "let poll of polls"
+        *ngFor = "let poll of polls"
         [question] = "poll.question"
-        [pollImage] = "poll.image"
+        [pollImage] = "poll.thumbnail"
         [voted] = "poll.voted"
-        [votes] = "poll.votes"
+        [votes] = "poll.results"
+        (click) = "setActivePoll(poll)"
     ></app-poll>
   </div>
+
+
   <!--Mostrando el detalle de la encuesta-->
   <div class = "container poll-detail">
-    <app-poll-vote></app-poll-vote>
+    <!--activePoll viene desde app.component-->
+    <app-poll-vote
+          *ngIf = "activePoll"
+          [voted]    = "activePoll.voted"
+          [question] = "activePoll.question"
+          [options]  = "activePoll.options"
+          [results]  = "activePoll.results"
+    ></app-poll-vote>
   </div>
 </div>
