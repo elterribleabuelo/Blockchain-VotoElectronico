@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Poll } from './types';
+import { PollService } from './poll-service/poll.service';
 
 @Component({
   selector: 'app-root',
@@ -10,23 +11,12 @@ export class AppComponent {
   showForm = false; // Paso 1. Mostrar el formulario de nueva encuesta al clickear
   activePoll:Poll = null;
 
-  // Datos de prueba
-  polls:Poll[] = [{
-    id: 1,
-    question : 'Te gustan los perros o los gatos?',
-    thumbnail : 'https://images.pexels.com/photos/7527363/pexels-photo-7527363.jpeg',
-    results: [0,5,7],
-    options:["Gato","Perro","Ninguno"],
-    voted: true,
-  },
-  {
-    id: 2,
-    question : 'Cual es el mejor mes para las vacaciones de verano?',
-    thumbnail : 'https://images.pexels.com/photos/4577186/pexels-photo-4577186.jpeg',
-    results: [1,6,4],
-    options:["Enero","Febrero","Marzo"],
-    voted: false,
-  }];
+  // Obtenemos los datos ya sea desde el servicio o desde la Blockchain
+  polls = this.ps.getPolls() // Método que viene de poll-services.ts
+
+  constructor(private ps:PollService){
+
+  }
 
   setActivePoll(poll){
     // Método que sirve para abrir o cerrar encuestas

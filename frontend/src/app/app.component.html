@@ -21,7 +21,7 @@
     <!--Recogemos poll desde app.component.ts -->
      <!--Polls viene desde app.component-->
     <app-poll
-        *ngFor = "let poll of polls"
+        *ngFor = "let poll of polls | async"
         [question] = "poll.question"
         [pollImage] = "poll.thumbnail"
         [voted] = "poll.voted"
