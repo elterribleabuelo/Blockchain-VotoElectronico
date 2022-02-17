@@ -1,6 +1,6 @@
-<h3>Título de la pregunta en la encuesta</h3>
+<h3>{{question}}</h3> <!--Desde poll-vote.components.ts-->
 
-<form [formGroup]="voteForm" (ngSubmit) = "submitForm()">
+<form *ngIf = "!voted" [formGroup] = "voteForm" (ngSubmit) = "submitForm()">
   <div class="form-check" *ngFor="let opt of options; let i = index">
     <input
     type = "radio"
@@ -12,3 +12,7 @@
 
   <button type = "submit" class = "btn btn-secondary mt-3" [disabled] = "!voteForm.valid">Enviar voto</button>
 </form>
+
+<div id = "poll-results">
+
+</div>
