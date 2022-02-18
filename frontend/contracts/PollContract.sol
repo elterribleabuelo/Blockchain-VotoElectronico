@@ -6,18 +6,17 @@ contract PollContract {
         uint256 id;
         string question;
         string thumbnail;
-        uint64[] votes;
+        uint64[] votes; //[0,1,5,10,5,7,2]
         bytes32[] options;
     }
 
     struct Voter {
         address id; // Hash del usuario que esta botando
-        uint256[] votedIds; // Ids de encuestas en las que voto la persona
-        mapping(uint256 => bool) votedMap; // Permite busquedas instantaneas
+        uint256[] votedIds; // Ids de encuestas en las que voto la persona ---> CREDENCIAL DE ELECTOR
+        mapping(uint256 => bool) votedMap; // Permite busquedas instantaneas, aqui se relaciona la encuesta y su estado de votacion(con respecto a una persona en particular)
     }
 
-    // Almacenando todas las encuestas
-    Poll[] private polls;
+    Poll[] private polls; // Almacenando todas las encuestas
     mapping(address => Voter) private voters; // cada direccion en la cadena de bloques apunta a un unico votante
 
     function createPoll(
@@ -63,5 +62,33 @@ contract PollContract {
             polls[_pollId].votes,
             polls[_pollId].options
         );
+    }
+
+    function vote(uint256 _pollId, uint64 _vote) external {
+        /** Params:
+        _pollId: Id de la encuesta en la que se desea votar
+        _vote: Indice que toma la opcion en la encuesta
+       */
+
+        // Verificando si la encuesta en la que se desea votar es válida
+        require(_pollId < polls.length, "Poll does not exist");
+
+        // Verificando si la opcion elegida es válida
+        require(_vote < polls[_pollId].options.length, "Invalid vote");
+
+        // Verificando si la persona aun no ha votado en dicha encuesta
+        require(
+            voters[msg.sender].votedMap[_pollId] == false,
+            "You already voted"
+        );
+
+        // Colocamos un voto más en la propiedad votes de Struc Poll (en el índice establecido--> _vote)
+        polls[_pollId].votes[_vote] += 1;
+
+        // Añadimos el id de la encuesta dentro del valor de la propiedad votedIds de Struct Voter
+        voters[msg.sender].votedIds.push(_pollId);
+
+        // Cambiamos el estado de votación de la persona dentro de la encuesta a true
+        voters[msg.sender].votedMap[_pollId] = true;
     }
 }
