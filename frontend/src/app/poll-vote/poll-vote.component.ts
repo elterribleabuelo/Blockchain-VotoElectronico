@@ -1,6 +1,8 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
 import { FormBuilder,FormGroup,Validators } from '@angular/forms';
 import ApexCharts from 'apexcharts';
+import { PollVote } from '../types';
+//import { EventEmitter } from 'stream';
 
 @Component({
   selector: 'app-poll-vote',
@@ -14,16 +16,25 @@ export class PollVoteComponent implements AfterViewInit {
    * results: resultados de la votacion
    * question: Pregunta formulada
    */
-  // Datos de entrada desde app.component
+
+  // Datos de entrada que van desde app.component.ts hacia poll-vote.component.ts
   @Input() voted:boolean; // Recojemos la variable del app.component.ts
   @Input() options: string[];
   @Input() results: number[];
   @Input() question:string;
+  @Input() id:number;
+
+  // Datos de salida que van desde poll-vote.component.ts hacia app.component.html
+  @Output() pollVoted: EventEmitter<PollVote> = new EventEmitter(); // indica
 
 
   voteForm: FormGroup;
 
+  // Emitiendo valores hacia app.component.ts
+  //@Output() pollCreated: EventEmitter = new EventEmitter();
+
   constructor(private fb:FormBuilder) {
+    // Llenando el voteForm de acuerdo a lo seleccionado en el radiogroup
     this.voteForm = this.fb.group({
       selected:this.fb.control("",[Validators.required]),
     });
@@ -31,13 +42,21 @@ export class PollVoteComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.voted){
-      // Si ha votado se genera la vista con graficos
+      // Si ha votado se genera la vista con graficos de los resultados
       this.generateChart();
     }
   }
 
   submitForm(){
-    console.log(this.voteForm.value);
+    const pollVoted: PollVote = {
+      id: this.id,
+      vote: this.voteForm.get("selected").value, // opcion por la que voto
+    };
+
+    // Generando el evento para que se registre el voto
+    this.pollVoted.emit(pollVoted); // Creamos el evento y se lo mandamos al formulario app.component.html
+
+    // console.log("Desde submitForm() poll-vote.component.ts : ", this.voteForm.value); // JSON: {selected:2}
   }
 
   generateChart(){

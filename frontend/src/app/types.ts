@@ -3,20 +3,30 @@
 */
 
 // Interfaz para la encuesta
-export interface Poll{
+export interface Poll extends PollForm{
   /* Propiedades:
     id: 12,
-    question:Que dias de la semana te gustan mas?,
     results:[0,0,0,0,5,7,2],
-    options:['Lunes','Martes','Miercoles','Jueves','Viernes',...],
-    thumbnail: https://image,png
   */
   id: number;
-  question:string;
   results:number[];
+  voted:boolean;
+}
+
+export interface PollForm{
+  /** Propiedades
+   * question:Que dias de la semana te gustan mas?,
+   * options:['Lunes','Martes','Miercoles','Jueves','Viernes',...],
+   * thumbnail: https://image,png
+   */
+  question:string;
   options:string[];
   thumbnail:string;
-  voted:boolean
+}
+
+export interface PollVote{
+  id: number;
+  vote: number;
 }
 
 // Interfaz para el votante

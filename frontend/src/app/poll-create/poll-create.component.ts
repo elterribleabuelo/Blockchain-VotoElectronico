@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PollForm } from '../types';
 
 @Component({
   selector: 'app-poll-create',
@@ -12,6 +13,10 @@ export class PollCreateComponent{
 
   // Propiedades 1.Forms
   pollForm:FormGroup; // Almacena todas las entradas de nuestro formulario en el constructor
+
+
+  // Datos de salida de poll-create.component.ts que van hacia app.component.html
+  @Output() pollCreated: EventEmitter<PollForm> = new EventEmitter();
 
   constructor(
     // 2.Forms
@@ -29,6 +34,20 @@ export class PollCreateComponent{
    }
 
    submitForm(){
-    console.log(this.pollForm.value);
+    const formData:PollForm = {
+      question: this.pollForm.get("question").value, // Clave viene del constructor
+      thumbnail: this.pollForm.get("image").value,
+      options: [
+        this.pollForm.get('op1').value,
+        this.pollForm.get('op2').value,
+        this.pollForm.get('op3').value
+      ]
+    };
+
+    console.log("FormData desde poll-create.component.ts:", formData); // formData--> JSON con todos los valores llenos
+
+    this.pollCreated.emit(formData); // Creamos el evento y se lo mandamos al formulario app.component.html
+
+    //console.log(this.pollForm.value);
    }
 }

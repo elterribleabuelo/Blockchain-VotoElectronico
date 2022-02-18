@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { Poll } from '../types';
+import { Poll, PollForm } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -35,11 +35,12 @@ export class PollService {
 
   vote(pollId: number, voteNumber: number){
     // Realiza la votacion en la encuesta
-    console.log(pollId, voteNumber);
+    console.log("Vpte creado en el servicio:",pollId, voteNumber);
   }
 
-  createPoll(question: string, thumbnail: string, options: string[]){
+  createPoll(poll: PollForm){
     // Crea la encuesta
-    console.log(question,thumbnail,options);
+    console.log("Poll creado en el servicio:", poll);
+    // JSON: {question: 'hola que tal', thumbnail: 'https://...,options:["a","b","c"]}
   }
 }

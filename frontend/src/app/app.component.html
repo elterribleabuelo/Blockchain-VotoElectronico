@@ -12,7 +12,12 @@
   <p class = "lead text-muted">Desarrollado con Blockchain</p>
 </section>
 
-<app-poll-create *ngIf = "showForm"></app-poll-create>
+<!--dato @Output : pollCreated se crea al momento de hacer el submit en el formulario-->
+<!-- $event: variable de tipo PollForm en formato JSON-->
+<app-poll-create
+*ngIf = "showForm"
+(pollCreated) = "handlePollCreate($event)"
+></app-poll-create>
 
 <div class="d-flex">
 
@@ -34,8 +39,11 @@
   <!--Mostrando el detalle de la encuesta-->
   <div class = "container poll-detail">
     <!--activePoll viene desde app.component-->
+    <!--pollVoted viene desde app.component.ts-->
     <app-poll-vote
           *ngIf = "activePoll"
+          (pollVoted) = "handlePollVote($event)"
+          [id] = "activePoll.id"
           [voted]    = "activePoll.voted"
           [question] = "activePoll.question"
           [options]  = "activePoll.options"
