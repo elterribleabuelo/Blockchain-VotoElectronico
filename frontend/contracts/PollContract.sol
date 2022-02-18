@@ -43,4 +43,25 @@ contract PollContract {
 
         polls.push(newPoll);
     }
+
+    function getPoll(uint256 _pollId)
+        external
+        view
+        returns (
+            uint256,
+            string memory,
+            string memory,
+            uint64[] memory,
+            bytes32[] memory
+        )
+    {
+        require(_pollId < polls.length && _pollId >= 0, "No poll found");
+        return (
+            polls[_pollId].id,
+            polls[_pollId].question,
+            polls[_pollId].thumbnail,
+            polls[_pollId].votes,
+            polls[_pollId].options
+        );
+    }
 }
