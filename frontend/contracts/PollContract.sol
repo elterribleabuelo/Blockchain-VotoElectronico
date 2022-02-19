@@ -2,6 +2,7 @@
 pragma solidity >=0.6.6;
 
 contract PollContract {
+    // Definiendo Structs
     struct Poll {
         uint256 id;
         string question;
@@ -16,8 +17,14 @@ contract PollContract {
         mapping(uint256 => bool) votedMap; // Permite busquedas instantaneas, aqui se relaciona la encuesta y su estado de votacion(con respecto a una persona en particular)
     }
 
+    // Definiendo atributos
     Poll[] private polls; // Almacenando todas las encuestas
     mapping(address => Voter) private voters; // cada direccion en la cadena de bloques apunta a un unico votante
+
+    // Creamos un evento para poder recepcionar _pollId desde el lado del cliente
+    event PollCreated(uint256 _pollId);
+
+    // Definimos las funciones
 
     function createPoll(
         string memory _question,
@@ -27,8 +34,6 @@ contract PollContract {
         // Restricciones
         require(bytes(_question).length > 0, "Empty question");
         require(_options.length > 1, "At leat 2 options required");
-
-        // Code
 
         uint256 pollId = polls.length; //Id de la encuesta
 
@@ -41,6 +46,9 @@ contract PollContract {
         });
 
         polls.push(newPoll);
+
+        // Emitimos el evento
+        emit PollCreated(pollId);
     }
 
     function getPoll(uint256 _pollId)
@@ -91,4 +99,31 @@ contract PollContract {
         // Cambiamos el estado de votación de la persona dentro de la encuesta a true
         voters[msg.sender].votedMap[_pollId] = true;
     }
+
+    function getVoter(address _id)
+        external
+        view
+        returns (address, uint256[] memory)
+    {
+        /** Params:
+      address _id : identificador del elector (Dada por Metamask)
+      Returns:
+      address : identificador del elector (Hash)
+      uint256[] :Identificación de la encuesta en la que voto
+
+      Returns:
+      voters[_id].id : Hash del usurio en metamask
+      voters[_id].votedIds : Matriz que contiene los id de encuestas en los que la persona ha botado
+      */
+        return (voters[_id].id, voters[_id].votedIds);
+    }
+
+    function getTotalPolls() external view returns (uint256) {
+        /**
+        Return: Número total de encuestas
+       */
+        return polls.length;
+    }
 }
+
+// https://medium.com/@shuffledex/eventos-en-la-blockchain-c%C3%B3mo-emitirlos-con-solidity-y-recepcionarlos-con-web3-js-6411dafee8b7
