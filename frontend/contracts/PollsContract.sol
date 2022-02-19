@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.6.6;
 
-contract PollContract {
+contract PollsContract {
     // Definiendo Structs
     struct Poll {
         uint256 id;
