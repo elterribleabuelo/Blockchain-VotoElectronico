@@ -26,4 +26,20 @@ export class Web3Service {
       console.warn("Metamask not found. Install or enable Metamask.")
     }
   }
+
+  getAccount():Promise<String>{
+    return this.web3.eth.getAccounts().then((accounts) => accounts[0] || '')
+  }
+
+  async executeTransaction(fnName:string,...args:[any]):Promise<void>{
+    /**
+     * function vote(): funcion para realizar una transaccion
+     * function getVoter: funcion de visualizacion que regresa datos
+     */
+    const acc = await this.getAccount();
+    this.contract.methods[fnName](...args).send({from:acc});
+  }
+
+  // executeTransaction("vote",pollId,vote)
+  // executeTransaction("createPoll",question,thumb,opt)
 }
