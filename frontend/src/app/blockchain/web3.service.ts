@@ -45,8 +45,18 @@ export class Web3Service {
 
   // executeTransaction("vote",pollId,vote)
   // executeTransaction("createPoll",question,thumb,opt)
+
+  async call(fnName:string, ...args:any[]){
+    /**
+     *Lee el smart contract y obtiene datos
+     */
+     const acc = await this.getAccount();
+     return this.contract.methods[fnName](...args).call({from : acc});
+
+  }
 }
 
 
 
 //https://ethereum.stackexchange.com/questions/29873/web3-contract-instantiation
+//https://blog.logrocket.com/develop-test-deploy-smart-contracts-ganache/

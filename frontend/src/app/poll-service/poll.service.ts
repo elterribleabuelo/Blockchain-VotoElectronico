@@ -13,26 +13,26 @@ export class PollService {
 
   constructor(private web3:Web3Service) { }
 
-  getPolls():Observable<Poll[]>{
-    // Obtenemos las encuestas
+  async getPolls():Promise<Poll[]>{
 
-    return of([
-      {
-      id: 1,
-      question : 'Te gustan los perros o los gatos?',
-      thumbnail : 'https://images.pexels.com/photos/7527363/pexels-photo-7527363.jpeg',
-      results: [0,5,7],
-      options:["Gato","Perro","Ninguno"],
-      voted: true,
-    },
-    {
-      id: 2,
-      question : 'Cual es el mejor mes para las vacaciones de verano?',
-      thumbnail : 'https://images.pexels.com/photos/4577186/pexels-photo-4577186.jpeg',
-      results: [1,6,4],
-      options:["Enero","Febrero","Marzo"],
-      voted: false,
-    }]).pipe(delay(2000));
+    const polls:Poll[] = [];
+
+    // Interractuando con el smart contract
+
+    const totalPolls = await this.web3.call('getTotalPolls'); // numero total de encuestas
+    console.log(totalPolls);
+
+    // Parametros
+    const acc = await this.web3.getAccount(); // hash de la cuenta de memtamask
+    const voter = await this.web3.call('getVoter',acc);
+
+    for (let i = 0; i < totalPolls; i++){
+      const poll = await this.web3.call('getPoll',i);
+      polls.push(poll);
+    }
+
+    return polls;
+
 
   }
 
