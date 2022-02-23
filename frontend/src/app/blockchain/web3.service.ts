@@ -11,13 +11,16 @@ export class Web3Service {
 
   private web3:Web3;
   private contract:Contract;
-  private contractAddress = "0x4dfa9AA4D75ABFe4b72C25813a1079891CB58D90" // Dirección hash del contrat donde está desplegado --> viene de Ganache
-
+  private contractAddress = "0xEb507661Ecc6bcfD35Fa248Bc110C6677d3Ae626"; // Dirección hash del contrat donde está desplegado --> viene de Ganache
   constructor() {
+
     // Verificamos si el usurio tiene instalado Metamask
     if (window.web3){
       this.web3 = new Web3(window.ethereum);
-      this.contract = new this.web3.eth.Contract(contractAbi,this.contractAddress);
+      console.log(contractAbi['abi']);
+      console.log(typeof contractAbi);
+
+      this.contract = new this.web3.eth.Contract(contractAbi['abi'],this.contractAddress);
 
       window.ethereum.enable().catch((err) => {
         console.log(err);
@@ -31,15 +34,19 @@ export class Web3Service {
     return this.web3.eth.getAccounts().then((accounts) => accounts[0] || '')
   }
 
-  async executeTransaction(fnName:string,...args:[any]):Promise<void>{
+  async executeTransaction(fnName:string, ...args:any[]):Promise<void>{
     /**
      * function vote(): funcion para realizar una transaccion
      * function getVoter: funcion de visualizacion que regresa datos
      */
     const acc = await this.getAccount();
-    this.contract.methods[fnName](...args).send({from:acc});
+    this.contract.methods[fnName](...args).send({from : acc});
   }
 
   // executeTransaction("vote",pollId,vote)
   // executeTransaction("createPoll",question,thumb,opt)
 }
+
+
+
+//https://ethereum.stackexchange.com/questions/29873/web3-contract-instantiation
