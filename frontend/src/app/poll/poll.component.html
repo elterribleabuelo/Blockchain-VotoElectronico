@@ -1,16 +1,23 @@
-<div class="card mb-4">
-  <div class = "poll-image">
-    <img [src] = "pollImage" />
-  </div>
 
-  <div class="card-body">
-    <p class="card-text font-weight-bold">
-      {{question}}   <!--desde poll.component.ts-->
-    </p>
+<div class="container poll-total">
+  <div class="card mb-4">
+    <!--Inicio Cards Blockchain-->
+    <div class = "poll-image">
+      <img [src] = "pollImage" />
+    </div>
 
-    <div class="d-flex justify-content-between">
-      <small class = "text-muted">Votos: {{ numberOfVotes }}</small>  <!--desde poll.component.ts-->
-      <small *ngIf = "voted" class = "badge badge-success">voto</small>
+    <div class="card-body">
+      <p class="card-text font-weight-bold">
+        {{question}}   <!--desde poll.component.ts-->
+      </p>
+
+      <div class="d-flex justify-content-between">
+        <small class = "text-muted">Votos: {{ numberOfVotes }}</small>  <!--desde poll.component.ts-->
+        <small *ngIf = "voted" class = "badge badge-success">voto</small>
+      </div>
     </div>
   </div>
+  <!-- Fin Cards Blockchain-->
 </div>
+
+

@@ -1,20 +1,24 @@
-<h3>{{question}}</h3> <!--Desde poll-vote.components.ts-->
+<h3 class = "question_title"><strong> Pregunta: {{question}}</strong></h3> <!--Desde poll-vote.components.ts-->
 
 <!--Formulario se activa si no ha votado -->
 <!--voted: viene desde app.component.ts - poll-vote.component.ts -->
 <form *ngIf = "!voted" [formGroup] = "voteForm" (ngSubmit) = "submitForm()">
-  <div class="form-check" *ngFor="let opt of options; let i = index">
-    <input
-    type = "radio"
-    class = "form-check-input"
-    formControlName = "selected"
-    [value] = "i"/>
-    <label class = "form-check-label">{{opt}}</label> <!--Desde poll-vote.components.ts-->
+  <h4>Opciones:</h4>
+  <div class = "container options">
+    <div class="form-check" *ngFor="let opt of options; let i = index">
+      <input
+      type = "radio"
+      class = "form-check-input"
+      formControlName = "selected"
+      [value] = "i"/>
+      <label class = "form-check-label">{{opt}}</label> <!--Desde poll-vote.components.ts-->
+    </div>
   </div>
+
 
   <button
     type = "submit"
-    class = "btn btn-secondary mt-3"
+    class = "btn btn-secondary mt-3 btn_sbt"
     [disabled] = "!voteForm.valid">
     Enviar voto
   </button>

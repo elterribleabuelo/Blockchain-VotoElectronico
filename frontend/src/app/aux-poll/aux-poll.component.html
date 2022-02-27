@@ -1,0 +1,38 @@
+<div class="container-fluid page">
+  <div class="page__box p-3 mt-2">Encuestas</div>
+</div>
+
+<div class="d-flex">
+  <div class = "container poll-list">
+
+      <!--Recogemos poll desde app.component.ts -->
+     <!--Polls viene desde app.component-->
+    <app-poll
+      *ngFor = "let poll of polls | async"
+      [question] = "poll.question"
+      [pollImage] = "poll.thumbnail"
+      [voted] = "poll.voted"
+      [votes] = "poll.results"
+      (click) = "setActivePoll(poll)"
+    ></app-poll>
+
+  </div>
+
+  <div class = "container poll-detail">
+    <div *ngIf = "activePoll" class = "container poll-aux">
+      <!--activePoll viene desde app.component-->
+      <!--pollVoted viene desde app.component.ts-->
+      <app-poll-vote
+      *ngIf = "activePoll"
+      (pollVoted) = "handlePollVote($event)"
+      [id] = "activePoll.id"
+      [voted]    = "activePoll.voted"
+      [question] = "activePoll.question"
+      [options]  = "activePoll.options"
+      [results]  = "activePoll.results"
+      ></app-poll-vote>
+    </div>
+  </div>
+</div>
+
+

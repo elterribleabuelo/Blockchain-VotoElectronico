@@ -1,0 +1,43 @@
+@import "../home/home.component.scss";
+
+.question_title {
+  margin-left: 300px;
+}
+
+.poll-detail {
+  margin-top: 50px;
+  margin-left: 250px;
+  /*border-style: solid;*/
+}
+
+.poll-list {
+  margin-left: 100px;
+  margin-top: 50px;
+  max-width: 300px;
+}
+
+.poll-aux {
+  display: flex;
+  align-items: center;
+  height: 500px;
+  border-style: solid;
+  padding-left: 150px;
+}
+
+.poll-aux-result {
+  height: 500px;
+  border-style: solid;
+  border-color: cornflowerblue;
+}
+
+.options {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#poll-results {
+  margin-left: 200px;
+  width: 450px;
+  height: 200px;
+}

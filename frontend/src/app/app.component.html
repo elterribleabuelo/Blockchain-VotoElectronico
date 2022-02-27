@@ -1,53 +1,32 @@
-<nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand mr-auto"href="#">Blockchain Encuesta</a>
-  <!--Paso 2. Mostrar el formulario de nueva encuesta al clickear-->
-  <button type="button"
-  class="btn btn-secondary"
-  (click) = "showForm = !showForm"
-  >Crear Encuesta</button>
-</nav>
+<mat-drawer-container>
 
-<section class = "jumpotron bg-light text-center">
-  <h1>Listado de encuestas</h1>
-  <p class = "lead text-muted">Desarrollado con Blockchain</p>
-</section>
+  <!--Inicio Sidenav-->
+  <mat-drawer mode = "side" [opened] = "sideBarOpen">
+    <app-sidenav></app-sidenav>
+  </mat-drawer>
+  <!--Fin Sidenav-->
 
-<!--dato @Output : pollCreated se crea al momento de hacer el submit en el formulario-->
-<!-- $event: variable de tipo PollForm en formato JSON-->
-<app-poll-create
-*ngIf = "showForm"
-(pollCreated) = "handlePollCreate($event)"
-></app-poll-create>
+  <mat-drawer-content>
 
-<div class="d-flex">
+    <!--Inicio cabezera-->
+    <app-header (toggleSidebarForMe)="sideBarToggler()">
+    </app-header>
+    <!--Fin cabezera-->
 
-  <!--Mostrando la lista de encuestas -->
-  <div class = "container poll-list">
-    <!--Recogemos poll desde app.component.ts -->
-     <!--Polls viene desde app.component-->
-    <app-poll
-        *ngFor = "let poll of polls | async"
-        [question] = "poll.question"
-        [pollImage] = "poll.thumbnail"
-        [voted] = "poll.voted"
-        [votes] = "poll.results"
-        (click) = "setActivePoll(poll)"
-    ></app-poll>
-  </div>
+    <!--Inicio sección cambiante-->
+    <router-outlet></router-outlet>
+    <!--Fin sección cambiante-->
+
+  </mat-drawer-content>
+</mat-drawer-container>
+
+<!--<app-poll
+            *ngFor = "let poll of polls | async"
+            [question] = "poll.question"
+            [pollImage] = "poll.thumbnail"
+            [voted] = "poll.voted"
+            [votes] = "poll.results"
+            (click) = "setActivePoll(poll)"
+></app-poll> -->
 
 
-  <!--Mostrando el detalle de la encuesta-->
-  <div class = "container poll-detail">
-    <!--activePoll viene desde app.component-->
-    <!--pollVoted viene desde app.component.ts-->
-    <app-poll-vote
-          *ngIf = "activePoll"
-          (pollVoted) = "handlePollVote($event)"
-          [id] = "activePoll.id"
-          [voted]    = "activePoll.voted"
-          [question] = "activePoll.question"
-          [options]  = "activePoll.options"
-          [results]  = "activePoll.results"
-    ></app-poll-vote>
-  </div>
-</div>

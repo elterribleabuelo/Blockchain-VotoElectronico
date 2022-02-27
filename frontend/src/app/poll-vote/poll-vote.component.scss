@@ -1,4 +1,16 @@
+@import "../home/home.component.scss";
+
 #poll-results {
   width: 450px;
   height: 200px;
+}
+
+.options {
+  display: block;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn_sbt {
+  margin-left: 80px;
 }

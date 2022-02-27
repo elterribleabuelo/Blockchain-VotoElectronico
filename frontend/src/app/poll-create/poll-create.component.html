@@ -1,52 +1,59 @@
 <!--PollCreate component view: Vista del componente-->
-<form [formGroup]="pollForm" (ngSubmit) = "submitForm()" class = "container col-sm-4"> <!--5.Forms -- [formGroup]="pollForm" -->
-  <div class="form-group row">
-    <label class = "col-sm-3 col-form-label col-form-label-sm">Pregunta:</label>
-    <div class = "col-sm-8">
-      <!--6.Forms -- formControlName = "question" -->
-      <input formControlName = "question" type="text" class = "form-control form-control-sm" placeholder = "Pregunta de encuesta">
+<div class="container-fluid page">
+  <div class="page__box p-3 mt-2">Crear encuesta</div>
+  <div class="page__content shadow p-3 position-relative">
+    <div class="page__content-data position-absolute">
+      <form [formGroup]="pollForm" (ngSubmit) = "submitForm()" class = "container"> <!--5.Forms -- [formGroup]="pollForm" -->
+        <div class="form-group row">
+          <label class = "col-sm-3 col-form-label col-form-label-sm">Pregunta:</label>
+          <div class = "col-sm-8">
+            <!--6.Forms -- formControlName = "question" -->
+            <input formControlName = "question" type="text" class = "form-control form-control-sm" placeholder = "Pregunta de encuesta">
 
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class = "col-sm-3 col-form-label col-form-label-sm">Imagen:</label>
+          <div class = "col-sm-8">
+            <!--6.Forms -- formControlName = "image" -->
+            <input formControlName = "image" type="text" class = "form-control form-control-sm" placeholder = "Url de la imagen">
+          </div>
+        </div>
+
+        <!--Opciones-->
+
+        <div class="form-group row">
+          <label class = "col-sm-3 col-form-label col-form-label-sm">Opciones:</label>
+          <div class = "col-sm-8">
+            <!--6.Forms -- formControlName = "op1" -->
+            <input formControlName = "op1" type="text" class = "form-control form-control-sm" placeholder = "Opcion 1">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class = "col-sm-3 col-form-label col-form-label-sm"></label>
+          <div class = "col-sm-8">
+            <!--6.Forms -- formControlName = "op2" -->
+            <input formControlName = "op2" type="text" class = "form-control form-control-sm" placeholder = "Opcion 2">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class = "col-sm-3 col-form-label col-form-label-sm"></label>
+          <div class = "col-sm-8">
+            <!--6.Forms -- formControlName = "op3" -->
+            <input formControlName = "op3" type="text" class = "form-control form-control-sm" placeholder = "Opcion 3">
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+          <button type = "submit" class = "btn btn-sm btn-secondary">
+            Submit poll
+          </button>
+        </div>
+
+      </form>
     </div>
   </div>
-
-  <div class="form-group row">
-    <label class = "col-sm-3 col-form-label col-form-label-sm">Image:</label>
-    <div class = "col-sm-8">
-      <!--6.Forms -- formControlName = "image" -->
-      <input formControlName = "image" type="text" class = "form-control form-control-sm" placeholder = "Url de la imagen">
-    </div>
-  </div>
-
-  <!--Opciones-->
-
-  <div class="form-group row">
-    <label class = "col-sm-3 col-form-label col-form-label-sm">Options:</label>
-    <div class = "col-sm-8">
-      <!--6.Forms -- formControlName = "op1" -->
-      <input formControlName = "op1" type="text" class = "form-control form-control-sm" placeholder = "Opcion 1">
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <label class = "col-sm-3 col-form-label col-form-label-sm"></label>
-    <div class = "col-sm-8">
-      <!--6.Forms -- formControlName = "op2" -->
-      <input formControlName = "op2" type="text" class = "form-control form-control-sm" placeholder = "Opcion 2">
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <label class = "col-sm-3 col-form-label col-form-label-sm"></label>
-    <div class = "col-sm-8">
-      <!--6.Forms -- formControlName = "op3" -->
-      <input formControlName = "op3" type="text" class = "form-control form-control-sm" placeholder = "Opcion 3">
-    </div>
-  </div>
-
-  <div class="d-flex justify-content-center">
-    <button type = "submit" class = "btn btn-sm btn-secondary">
-      Submit poll
-    </button>
-  </div>
-
-</form>
+</div>

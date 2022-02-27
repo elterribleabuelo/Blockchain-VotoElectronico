@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { Observable } from 'rxjs';
 import Web3 from 'web3';
 import { Contract } from "web3-eth-contract";
 
@@ -11,8 +12,8 @@ export class Web3Service {
 
   private web3:Web3;
   private contract:Contract;
-  private contractAddress = "0xEb507661Ecc6bcfD35Fa248Bc110C6677d3Ae626"; // Dirección hash del contrat donde está desplegado --> viene de Ganache
-  constructor() {
+  private contractAddress = "0xEb507661Ecc6bcfD35Fa248Bc110C6677d3Ae626";// Dirección hash del contrat donde está desplegado --> viene de Ganache
+  constructor(private zone:NgZone) {
 
     // Verificamos si el usurio tiene instalado Metamask
     if (window.web3){
@@ -52,8 +53,22 @@ export class Web3Service {
      */
      const acc = await this.getAccount();
      return this.contract.methods[fnName](...args).call({from : acc});
-
   }
+
+  onEvents(event:string){
+    return new Observable((observer) =>{
+      this.contract.events[event]().on('data',(data) => {
+        this.zone.run(() => {
+          observer.next({
+            event: data.event,
+            payload: data.returnValues,
+          });
+        });
+      });
+    })
+  }
+
+
 }
 
 

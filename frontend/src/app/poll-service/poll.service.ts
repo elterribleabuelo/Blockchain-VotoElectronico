@@ -23,7 +23,7 @@ export class PollService {
     // Interractuando con el smart contract
 
     const totalPolls = await this.web3.call('getTotalPolls'); // numero total de encuestas
-    console.log(totalPolls);
+    console.log("Numero total de encuestas desde el servicio:",totalPolls);
 
     // Parametros
     const acc = await this.web3.getAccount(); // hash de la cuenta de memtamask
@@ -76,7 +76,10 @@ export class PollService {
         voter.votedIds.length &&
         voter.votedIds.find(votedId => votedId == parseInt(pollRaw[0])) !=
         undefined,
-
     }
+  }
+
+  onEvent(name:string){
+    return this.web3.onEvents(name);
   }
 }
