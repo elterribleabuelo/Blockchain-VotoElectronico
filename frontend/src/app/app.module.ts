@@ -20,6 +20,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { DataComponent } from './data/data.component';
 import { AuxPollComponent } from './aux-poll/aux-poll.component';
+import { AuxPollCreateComponent } from './aux-poll-create/aux-poll-create.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AuxPollComponent } from './aux-poll/aux-poll.component';
     HomeComponent,
     DataComponent,
     AuxPollComponent,
+    AuxPollCreateComponent,
   ],
   imports: [
     BrowserModule,

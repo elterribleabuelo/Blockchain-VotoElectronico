@@ -8,13 +8,14 @@ import { AuxPollComponent } from './aux-poll/aux-poll.component';
 import { PollComponent } from './poll/poll.component';
 import { PollVoteComponent } from './poll-vote/poll-vote.component';
 import { DataComponent } from './data/data.component';
+import { AuxPollCreateComponent } from './aux-poll-create/aux-poll-create.component';
 
 
 
 const routes:Routes = [
   {path: '', redirectTo: 'home',pathMatch:'full'},
   {path : 'home', component : HomeComponent},
-  {path: 'pollCreate',component: PollCreateComponent},
+  {path: 'pollCreate',component: AuxPollCreateComponent},
   {path: 'poll', component:AuxPollComponent},
   {path: 'pollVote', component:PollVoteComponent},
   {path: 'data', component:DataComponent}
