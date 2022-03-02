@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Poll, PollForm, PollVote } from './types';
+import { LoginComponent } from './login/login.component';
 import { PollService } from './poll-service/poll.service';
 import {BreakpointObserver} from '@angular/cdk/layout';
 
@@ -10,6 +11,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 })
 export class AppComponent {
 
+  login = false;
   sideBarOpen = true;
 
   activePoll:Poll = null;

@@ -1,4 +1,7 @@
-<mat-drawer-container>
+<app-login *ngIf = "!login"></app-login>
+
+
+<mat-drawer-container *ngIf = "login">
 
   <!--Inicio Sidenav-->
   <mat-drawer mode = "side" [opened] = "sideBarOpen">
@@ -18,15 +21,8 @@
     <!--Fin sección cambiante-->
 
   </mat-drawer-content>
+
 </mat-drawer-container>
 
-<!--<app-poll
-            *ngFor = "let poll of polls | async"
-            [question] = "poll.question"
-            [pollImage] = "poll.thumbnail"
-            [voted] = "poll.voted"
-            [votes] = "poll.results"
-            (click) = "setActivePoll(poll)"
-></app-poll> -->
 
 

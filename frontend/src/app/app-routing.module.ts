@@ -9,11 +9,13 @@ import { PollComponent } from './poll/poll.component';
 import { PollVoteComponent } from './poll-vote/poll-vote.component';
 import { DataComponent } from './data/data.component';
 import { AuxPollCreateComponent } from './aux-poll-create/aux-poll-create.component';
+import { LoginComponent } from './login/login.component';
 
 
 
 const routes:Routes = [
-  {path: '', redirectTo: 'home',pathMatch:'full'},
+  {path: '', redirectTo: 'login',pathMatch:'full'},
+  {path:'login',component:LoginComponent},
   {path : 'home', component : HomeComponent},
   {path: 'pollCreate',component: AuxPollCreateComponent},
   {path: 'poll', component:AuxPollComponent},

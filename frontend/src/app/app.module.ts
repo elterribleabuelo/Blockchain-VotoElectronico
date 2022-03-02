@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PollComponent } from './poll/poll.component';
 import { PollVoteComponent } from './poll-vote/poll-vote.component';
 import { PollService } from './poll-service/poll.service';
+import { LoginComponent } from './login/login.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu'
@@ -28,6 +29,7 @@ import { AuxPollCreateComponent } from './aux-poll-create/aux-poll-create.compon
     PollCreateComponent,
     PollComponent,
     PollVoteComponent,
+    LoginComponent,
     SidenavComponent,
     HeaderComponent,
     HomeComponent,
