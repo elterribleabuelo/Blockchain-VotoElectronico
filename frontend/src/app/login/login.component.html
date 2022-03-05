@@ -23,10 +23,10 @@
             </div>
 
             <form action = "submit" class = "input-group" #asLogin id = "login">
-                <input type="email" class = "input-field" placeholder = "Email" name = "email" id = "email" required>
-                <input type="password" class = "input-field" placeholder = "Contraseña" name = "password" id = "password" required>
+                <input type="email" class = "input-field" placeholder = "Email" name = "email" [(ngModel)]="credenciales.correo" id = "email" required>
+                <input type="password" class = "input-field" placeholder = "Contraseña" name = "password" [(ngModel)]="credenciales.password" id = "password" required>
                 <input type="checkbox" class = "check-box"><span>Recordar contraseña</span>
-                <button type = "submit" class = "submit-btn">Acceder</button>
+                <button type = "submit" class = "submit-btn" (click) = "login_auth()">Acceder</button>
             </form>
 
             <form  action = "submit" class = "input-group" #asRegistrar id = "registrar" >
@@ -34,7 +34,7 @@
                 <input  type = "email" class = "input-field" placeholder = "Correo" name = "emailRegister" id = "emailRegister" required>
                 <input  type = "password" class = "input-field" placeholder = "Contraseña" name = "passwordRegister" id = "passwordRegister" required>
                 <input  type = "checkbox" class = "check-box"><span>Aceptar términos y condiciones</span>
-                <button type = "submit" class = "submit-btn">Registrarme</button>
+                <button type = "submit" class = "submit-btn" (click) = "registrar_firebase()">Registrarme</button>
             </form>
         </div>
     </div>

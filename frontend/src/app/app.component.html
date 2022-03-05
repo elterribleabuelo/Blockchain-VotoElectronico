@@ -1,7 +1,9 @@
-<app-login *ngIf = "!login"></app-login>
+<app-login (senderStateLogin) = "receiveStateAuth($event)" *ngIf = "login == false">
+  <!--[received] = "login"-->
+</app-login>
 
-
-<mat-drawer-container *ngIf = "login">
+<mat-drawer-container *ngIf = "login == true">
+  <!--(state_login) = "login"-->
 
   <!--Inicio Sidenav-->
   <mat-drawer mode = "side" [opened] = "sideBarOpen">
@@ -12,7 +14,7 @@
   <mat-drawer-content>
 
     <!--Inicio cabezera-->
-    <app-header (toggleSidebarForMe)="sideBarToggler()">
+    <app-header (toggleSidebarForMe)="sideBarToggler()" (senderStateLoginHeader) = "receiveStateAuthLogout($event)">
     </app-header>
     <!--Fin cabezera-->
 
@@ -23,6 +25,8 @@
   </mat-drawer-content>
 
 </mat-drawer-container>
+
+
 
 
 

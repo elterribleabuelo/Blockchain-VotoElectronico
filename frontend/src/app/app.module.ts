@@ -23,6 +23,14 @@ import { DataComponent } from './data/data.component';
 import { AuxPollComponent } from './aux-poll/aux-poll.component';
 import { AuxPollCreateComponent } from './aux-poll-create/aux-poll-create.component';
 
+import { AngularFireModule } from '@angular/fire';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
+
+
+import { environment } from 'src/environments/environment';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +56,10 @@ import { AuxPollCreateComponent } from './aux-poll-create/aux-poll-create.compon
     MatToolbarModule,
     MatIconModule,
     MatDividerModule,
-    routing
+    routing,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
   providers: [
     PollService,

@@ -12,6 +12,8 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 export class AppComponent {
 
   login = false;
+
+
   sideBarOpen = true;
 
   activePoll:Poll = null;
@@ -30,8 +32,19 @@ export class AppComponent {
     });
   };
 
-
   sideBarToggler(){
     this.sideBarOpen = !this.sideBarOpen;
   }
+
+  receiveStateAuth($event){
+    this.login = $event;
+  }
+
+  receiveStateAuthLogout($event){
+    this.login = $event;
+  }
+
+
+
+
 }

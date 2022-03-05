@@ -1,4 +1,9 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, Output,EventEmitter, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { AppComponent } from '../app.component';
+import { UserI } from '../models/model';
+import { AuthService } from '../services/auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -11,13 +16,43 @@ export class LoginComponent implements OnInit {
   @ViewChild('asRegistrar') registrar: ElementRef;
   @ViewChild('asElegir') elegir:ElementRef;
 
-  constructor(private renderer2:Renderer2) {
+  public toStateLogin:boolean;
 
+  //@Input() received:boolean; // Desde app.component.ts
+  @Output() senderStateLogin = new EventEmitter<boolean>();
 
-
+  credenciales = {
+    correo:null,
+    password:null
   }
 
-  ngOnInit(): void {
+  datos:UserI = {
+    dni:null,
+    nombre:null,
+    apellidos:null,
+    fecha_nacimiento:null,
+    correo:null,
+    uid:null,
+    password:null,
+    perfil:'votante'
+  }
+
+  constructor(private renderer2:Renderer2, private auth:AuthService, private router:Router) {
+  }
+
+  ngOnInit(): void {}
+
+  async login_auth(){
+    console.log('credenciales -> ',this.credenciales);
+    const res = await this.auth.login(this.credenciales.correo,this.credenciales.password).catch((error) =>{
+      console.log('error');
+    });
+    if (res){
+      console.log('Ingresando con exito...');
+      console.log(res);
+      this.senderStateLogin.emit(true);
+      this.router.navigate(['/home']);
+    }
   }
 
   login_fn():void {
@@ -41,6 +76,12 @@ export class LoginComponent implements OnInit {
     this.renderer2.setStyle(asLogin,'left',"-400px");
     this.renderer2.setStyle(asRegistrar,'left',"50px");
     this.renderer2.setStyle(asElegir,'left',"120px");
+}
+
+registrar_firebase(){
+
+
+
 }
 
 

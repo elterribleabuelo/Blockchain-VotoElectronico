@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "blockchain-votoelectronico": {
+      "hosting": {
+        "blockchain-poll": [
+          "blockchain-votoelectronico"
+        ]
+      }
+    }
+  }
+}
