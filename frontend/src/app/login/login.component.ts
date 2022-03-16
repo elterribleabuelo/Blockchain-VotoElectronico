@@ -2,7 +2,10 @@ import { Component, ElementRef, Input, Output,EventEmitter, OnInit, Renderer2, V
 import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
 import { UserI } from '../models/model';
+import { Usuario } from '../models/usuario';
 import { AuthService } from '../services/auth.service';
+import { FirestoreService } from '../services/firestore.service';
+import { UsuarioService } from '../services/usuario.service';
 
 
 @Component({
@@ -15,6 +18,7 @@ export class LoginComponent implements OnInit {
   @ViewChild('asLogin') login: ElementRef;
   @ViewChild('asRegistrar') registrar: ElementRef;
   @ViewChild('asElegir') elegir:ElementRef;
+  @ViewChild('asDNI') dni:ElementRef;
 
   public toStateLogin:boolean;
 
@@ -29,15 +33,23 @@ export class LoginComponent implements OnInit {
   datos:UserI = {
     dni:null,
     nombre:null,
-    apellidos:null,
+    apellido_materno:null,
+    apellido_paterno:null,
     fecha_nacimiento:null,
+    url_foto:null,
     correo:null,
     uid:null,
     password:null,
     perfil:'votante'
   }
 
-  constructor(private renderer2:Renderer2, private auth:AuthService, private router:Router) {
+  usuarioArray:Usuario[] = [];
+
+
+
+  constructor(private renderer2:Renderer2, private auth:AuthService,
+              private usuarioService:UsuarioService, private router:Router,
+              private firestore:FirestoreService){
   }
 
   ngOnInit(): void {}
@@ -78,13 +90,39 @@ export class LoginComponent implements OnInit {
     this.renderer2.setStyle(asElegir,'left',"120px");
 }
 
-registrar_firebase(){
+  async registrar_firebase(){
+    // Registrando en el módulo de Authentication de Firebase
+    const res = await this.auth.registrarUser(this.datos).catch(error => {
+      console.log("error")
+    })
 
+    if (res) {
+      console.log("Exito al crear usuario en Authentication");
+      const path = 'Usuarios';
+      const id = res.user.uid;
+      this.obtener_usuario(this.datos.dni,id)
 
+      try{
+        await setTimeout(() => this.firestore.createDoc(this.datos,path,id), 10000);
+        console.log("Exito al crear usuario en la Firestore");
+        //this.router.navigate(['/home']);
+      }catch(error){
+        console.log(error);
+      }
+    }
 
-}
+  }
 
-
-
-
+  obtener_usuario(dni:string,id:string):void{
+    this.usuarioService.getUsuario(dni).subscribe(data => {
+      //console.log("Data:", data[0])
+      this.datos.nombre = data[0].nombre;
+      this.datos.apellido_materno =  data[0].apellido_materno;
+      this.datos.apellido_paterno = data[0].apellido_paterno;
+      this.datos.fecha_nacimiento = data[0].fecha_nacimiento;
+      this.datos.url_foto = data[0].url_foto;
+      this.datos.uid = id;
+      this.datos.password = null;
+    })
+  }
 }

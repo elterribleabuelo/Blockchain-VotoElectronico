@@ -30,9 +30,9 @@
             </form>
 
             <form  action = "submit" class = "input-group" #asRegistrar id = "registrar" >
-                <input  type = "text" class = "input-field" placeholder = "Nombre de usuario" name = "nombUsuario" id = "nombUsuario"  required>
-                <input  type = "email" class = "input-field" placeholder = "Correo" name = "emailRegister" id = "emailRegister" required>
-                <input  type = "password" class = "input-field" placeholder = "Contraseña" name = "passwordRegister" id = "passwordRegister" required>
+                <input  type = "text" class = "input-field" placeholder = "DNI" name = "dni" id = "dni" #asDNI [(ngModel)]="datos.dni"  required>
+                <input  type = "email" class = "input-field" placeholder = "Correo" name = "emailRegister" id = "emailRegister" #asEmail [(ngModel)]="datos.correo" required>
+                <input  type = "password" class = "input-field" placeholder = "Contraseña" name = "passwordRegister" id = "passwordRegister" #asPassword [(ngModel)]="datos.password"required>
                 <input  type = "checkbox" class = "check-box"><span>Aceptar términos y condiciones</span>
                 <button type = "submit" class = "submit-btn" (click) = "registrar_firebase()">Registrarme</button>
             </form>

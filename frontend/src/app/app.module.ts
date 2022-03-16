@@ -30,6 +30,8 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 import { environment } from 'src/environments/environment';
 
+import { HttpClientModule } from '@angular/common/http';
+import { UsuarioService } from './services/usuario.service';
 
 @NgModule({
   declarations: [
@@ -59,11 +61,13 @@ import { environment } from 'src/environments/environment';
     routing,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    HttpClientModule
   ],
   providers: [
     PollService,
-    appRoutingProviders
+    appRoutingProviders,
+    UsuarioService
   ],
   bootstrap: [
     AppComponent
