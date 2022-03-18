@@ -24,6 +24,14 @@ export class AuthService {
     return this.authfirebase.createUserWithEmailAndPassword(datos.correo,datos.password)
   }
 
+  obtenerUser(){
+    return this.authfirebase.currentUser
+  }
+
+  stateUser(){
+    return this.authfirebase.authState
+  }
+
 
 
 

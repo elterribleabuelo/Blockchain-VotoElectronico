@@ -14,10 +14,27 @@ export class FirestoreService {
     return collection.doc(id).set(data)
   }
 
-  getCollection(){
-    console.log('Estoy por leer una coleccion');
-    this.firestore.collection('Estudiantes').get().subscribe((res) => {
+  getDoc<tipo>(path:string,id:string){
+    const collection = this.firestore.collection(path);
+    return collection.doc<tipo>(id).valueChanges()
 
-    });
+  }
+
+  getDocCorreo<tipo>(path:string,correo:string){
+    var db = this.firestore
+    const collection = this.firestore.collection(path);
+    //console.log(collection.valueChanges())
+    return collection.doc<tipo>(correo).valueChanges()
+  }
+
+  deleteDoc(path:string,id:string){
+    const collection = this.firestore.collection(path)
+    return collection.doc(id).delete()
+  }
+
+  updateDoc(data:any,path:string,id:string){
+    const collection = this.firestore.collection(path)
+    return collection.doc(id).update(data)
+
   }
 }
