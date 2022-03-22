@@ -9,6 +9,18 @@ import { AuthService } from '../services/auth.service';
 import { FirestoreService } from '../services/firestore.service';
 import { UsuarioService } from '../services/usuario.service';
 import * as faceapi from 'face-api.js';
+import { ProcessFaceService } from '../services/process-face.service';
+import * as canvas from 'canvas';
+const { Canvas, Image, ImageData } = canvas;
+
+faceapi.env.monkeyPatch({
+  fetch: fetch,
+  Canvas: window.HTMLCanvasElement,
+  Image: window.HTMLImageElement,
+  ImageData: canvas.ImageData,
+  createCanvasElement: () => document.createElement('canvas'),
+  createImageElement: () => document.createElement('img')
+});
 
 
 @Component({
@@ -54,10 +66,14 @@ export class LoginComponent implements OnInit {
 
 
 
+
+
+
   constructor(private renderer2:Renderer2, private auth:AuthService,
               private usuarioService:UsuarioService,
               private firestore:FirestoreService,private router:Router,
-              private http:HttpClient){
+              private http:HttpClient,
+              private processFacesSvc:ProcessFaceService){
   }
 
   ngOnInit(): void {}
@@ -68,8 +84,9 @@ export class LoginComponent implements OnInit {
       console.log('error');
     });
     if (res){
-      console.log('Ingresando con exito...');
+      console.log('Ingresando con exito (Con datos del API)...');
       console.log(res);
+      console.log("Identificacion Facial ...");
       //this.senderStateLogin.emit(true);
       //this.router.navigate(['/home']);
     }
@@ -138,6 +155,8 @@ export class LoginComponent implements OnInit {
 
   detectar(){
     this.main();
+    //this.senderStateLogin.emit(true);
+    //this.removerVideo();
   }
 
   removerVideo(){
@@ -154,7 +173,7 @@ export class LoginComponent implements OnInit {
     await faceapi.nets.faceRecognitionNet.loadFromUri('/assets/models');
 
     // Llamando a la imagen desde el API REST
-    this.loadImagenApi();
+    this.loadAndProcessImagenApi();
 
     //Stream de video
     this.videoContainer.nativeElement.srcObject = video;
@@ -167,34 +186,63 @@ export class LoginComponent implements OnInit {
 
     // Face-api
     const processFace = async() => {
+      /**
+       * Función que se encarga de procesar la imagen que se envía desde el stream de video
+       */
+      console.log("7.Tipo de dato-mycanvas:",this.myCanvas);
+      console.log("8.Tipo de dato-mycanvas con nativeElement:",this.myCanvas.nativeElement);
 
       const detection = await faceapi.detectSingleFace(this.myCanvas.nativeElement, new faceapi.TinyFaceDetectorOptions())
                         .withFaceLandmarks()
                         .withFaceDescriptor()
-      console.log(detection);
+      console.log("9.Detecciones desde login.component.ts:",detection); // JSON
       if(typeof detection == 'undefined') return;
+      try{
+        this.processFacesSvc.descriptor(detection); // ERROR AQUI
+      }catch(error){
+        console.log("10.Error en processFace:",error);
+      }
     }
 
     setInterval(processFace,2000);
     requestAnimationFrame(reDraw);
   }
 
-  async loadImagenApi(){
-    const imageElement = document.createElement('img');
+  async loadAndProcessImagenApi(){
     const path = 'Usuarios';
     const user = await this.auth.obtenerUser();
-    if (user !== null) {
-      const uid = user.uid;
-      this.firestore.getDoc<UserI>(path,uid).subscribe(res =>{
-        if (res){
-          imageElement.src = res.url_foto;
-          imageElement.crossOrigin = 'anonymous';
-          console.log(imageElement);
-        }
-      })
-    }
+    const uid = user.uid;
+    this.firestore.getDoc<UserI>(path,uid).subscribe(res =>{
+      this.usuarioService.getImageBase64(res.dni).subscribe(data =>{
+      const imageElement = document.createElement('img');
+      imageElement.src = data[0].encode_PhotoToBase64;
+      imageElement.crossOrigin = 'anonymous';
+      //let img = await faceapi.fetchImage(data[0].encode_PhotoToBase64);
+      console.log("data:",data[0]);
+      this.processFacesSvc.processFace(imageElement,res.uid);
+    })
+        //setTimeout(() => this.processFacesSvc.processFace(imageElement,res.uid),30000);
+
+    })
+
+  }
 
 
+  public image2Base64(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL;
+  }
 
+  getImgBase64(url:string){
+    var base64="";
+    var img = new canvas.Image();
+    img.src=url;
+    base64 = this.image2Base64(img);
+    console.log("Base 64:",base64);
   }
 }
