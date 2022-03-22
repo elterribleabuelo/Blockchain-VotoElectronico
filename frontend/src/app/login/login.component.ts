@@ -189,22 +189,26 @@ export class LoginComponent implements OnInit {
       /**
        * Función que se encarga de procesar la imagen que se envía desde el stream de video
        */
-      console.log("7.Tipo de dato-mycanvas:",this.myCanvas);
-      console.log("8.Tipo de dato-mycanvas con nativeElement:",this.myCanvas.nativeElement);
+      //console.log("INICIO - Procesando imagen que viene desde el stream");
+      //console.log("7.Tipo de dato-mycanvas:",this.myCanvas);
+      //console.log("8.Tipo de dato-mycanvas con nativeElement:",this.myCanvas.nativeElement);
 
       const detection = await faceapi.detectSingleFace(this.myCanvas.nativeElement, new faceapi.TinyFaceDetectorOptions())
                         .withFaceLandmarks()
                         .withFaceDescriptor()
-      console.log("9.Detecciones desde login.component.ts:",detection); // JSON
+      //console.log("9.Detecciones desde login.component.ts:",detection); // JSON
       if(typeof detection == 'undefined') return;
       try{
         this.processFacesSvc.descriptor(detection); // ERROR AQUI
+        //console.log("YEAHHHHH");
+        //console.log("FIN - Procesando imagen que viene desde el stream");
       }catch(error){
-        console.log("10.Error en processFace:",error);
+        //console.log("10.Error en processFace:",error);
+        //console.log("FIN - Procesando imagen que viene desde el stream");
       }
     }
 
-    setInterval(processFace,2000);
+    setInterval(processFace,4000);
     requestAnimationFrame(reDraw);
   }
 
@@ -214,7 +218,9 @@ export class LoginComponent implements OnInit {
     const uid = user.uid;
     this.firestore.getDoc<UserI>(path,uid).subscribe(res =>{
       this.usuarioService.getImageBase64(res.dni).subscribe(data =>{
-      const imageElement = document.createElement('img');
+      var imageElement = document.createElement('img');
+      imageElement.classList.add('imageElement');
+      //imageElement.src = res.url_foto;
       imageElement.src = data[0].encode_PhotoToBase64;
       imageElement.crossOrigin = 'anonymous';
       //let img = await faceapi.fetchImage(data[0].encode_PhotoToBase64);

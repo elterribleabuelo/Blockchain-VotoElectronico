@@ -15,6 +15,7 @@
       "prefix": "app",
       "architect": {
         "build": {
+          "allowedCommonJdDependencies":["lodash","@tensorflow/tfjs-core"],
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/blockchain-poll",
