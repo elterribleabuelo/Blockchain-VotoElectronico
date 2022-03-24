@@ -13,8 +13,10 @@ const { Canvas, Image, ImageData } = canvas
 export class ProcessFaceService {
 
   idImage:any;
+  score:any;
   imageDescriptors:any = [];
   faceMatcher:any;
+  response:any = {score:null,label:null,code:null,message:null};
 
   constructor(private http:HttpClient, private router:Router, private accessSvc:AccessService) {
 
@@ -30,7 +32,7 @@ export class ProcessFaceService {
      */
 
     //console.log("INICIO - Procesando imagen que viene desde el API");
-     // Cargamos los modelos
+    // Cargamos los modelos
      await faceapi.nets.tinyFaceDetector.loadFromUri('/assets/models');
      await faceapi.nets.faceLandmark68Net.loadFromUri('/assets/models');
      await faceapi.nets.faceRecognitionNet.loadFromUri('/assets/models');
@@ -66,10 +68,25 @@ export class ProcessFaceService {
   }
 
   descriptor(detection:any){
-    const bestMatch = this.faceMatcher.findBestMatch(detection.descriptor);
-    console.log("Face Matcher:",bestMatch);
-    this.idImage = bestMatch.label;
-    this.passwordImg(this.idImage);
+    try{
+      const bestMatch = this.faceMatcher.findBestMatch(detection.descriptor);
+      console.log("Face Matcher:",bestMatch);
+      this.response.score = bestMatch.distance; // Distancia euclidiana
+      this.response.label = bestMatch.label; //Ids
+      if (this.response.score > 0.4) {
+        this.response.code = 1;
+        this.response.message = "Detección facial exitosa";
+        this.passwordImg(this.idImage);
+      }else {
+        this.response.code = 2;
+        this.response.message = "No se encontró detección facial";
+      }
+      return this.response
+    }catch(error){
+      this.response.code = 3;
+      this.response.message = "Error:" + error
+      return this.response
+    }
   }
 
   passwordImg(id:string){

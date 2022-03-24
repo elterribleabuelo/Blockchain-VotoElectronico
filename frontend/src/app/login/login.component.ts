@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
   public context!:CanvasRenderingContext2D;
   public toStateLogin:boolean;
   public url_foto:string;
+  public respuesta:any;
 
   //@Input() received:boolean; // Desde app.component.ts
   @Output() senderStateLogin = new EventEmitter<boolean>();
@@ -63,11 +64,7 @@ export class LoginComponent implements OnInit {
   }
 
   usuarioArray:Usuario[] = [];
-
-
-
-
-
+  var_code:any;
 
   constructor(private renderer2:Renderer2, private auth:AuthService,
               private usuarioService:UsuarioService,
@@ -199,17 +196,44 @@ export class LoginComponent implements OnInit {
       //console.log("9.Detecciones desde login.component.ts:",detection); // JSON
       if(typeof detection == 'undefined') return;
       try{
-        this.processFacesSvc.descriptor(detection); // ERROR AQUI
+        //this.respuesta = this.processFacesSvc.descriptor(detection); // ERROR AQUI
+        return this.processFacesSvc.descriptor(detection);
+        //console.log(this.respuesta);
         //console.log("YEAHHHHH");
         //console.log("FIN - Procesando imagen que viene desde el stream");
       }catch(error){
+        return error
         //console.log("10.Error en processFace:",error);
         //console.log("FIN - Procesando imagen que viene desde el stream");
       }
     }
 
-    setInterval(processFace,4000);
-    requestAnimationFrame(reDraw);
+
+
+    var refreshIntervalId = setInterval(() => {
+        var datos = processFace();
+        datos.then((res) => {
+          if (res == undefined){
+            requestAnimationFrame(reDraw);
+            return;
+          }else{
+            this.var_code = res.code;
+            this.detenerSetInterval(refreshIntervalId,res.code);
+            requestAnimationFrame(reDraw);
+          }
+        })},4000);
+}
+
+
+  detenerSetInterval(refreshIntervalId,code){
+    if (code == 1){
+      console.log("Fin del recococimeinto de la imagen. Match exitoso");
+      clearInterval(refreshIntervalId);
+      this.senderStateLogin.emit(true);
+      this.router.navigate(['/home']);
+    }else{
+      return;
+    }
   }
 
   async loadAndProcessImagenApi(){
@@ -220,35 +244,11 @@ export class LoginComponent implements OnInit {
       this.usuarioService.getImageBase64(res.dni).subscribe(data =>{
       var imageElement = document.createElement('img');
       imageElement.classList.add('imageElement');
-      //imageElement.src = res.url_foto;
       imageElement.src = data[0].encode_PhotoToBase64;
       imageElement.crossOrigin = 'anonymous';
-      //let img = await faceapi.fetchImage(data[0].encode_PhotoToBase64);
       console.log("data:",data[0]);
       this.processFacesSvc.processFace(imageElement,res.uid);
+      })
     })
-        //setTimeout(() => this.processFacesSvc.processFace(imageElement,res.uid),30000);
-
-    })
-
-  }
-
-
-  public image2Base64(img) {
-    var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0, img.width, img.height);
-    var dataURL = canvas.toDataURL("image/png");
-    return dataURL;
-  }
-
-  getImgBase64(url:string){
-    var base64="";
-    var img = new canvas.Image();
-    img.src=url;
-    base64 = this.image2Base64(img);
-    console.log("Base 64:",base64);
   }
 }
