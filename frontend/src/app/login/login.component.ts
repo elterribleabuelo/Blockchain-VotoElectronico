@@ -11,6 +11,12 @@ import { UsuarioService } from '../services/usuario.service';
 import * as faceapi from 'face-api.js';
 import { ProcessFaceService } from '../services/process-face.service';
 import * as canvas from 'canvas';
+import { ModalFaceDetectionComponent } from '../modal-face-detection/modal-face-detection.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Subject } from 'rxjs';
+
+
 const { Canvas, Image, ImageData } = canvas;
 
 faceapi.env.monkeyPatch({
@@ -41,6 +47,7 @@ export class LoginComponent implements OnInit {
   public toStateLogin:boolean;
   public url_foto:string;
   public respuesta:any;
+  public modalRef: BsModalRef;
 
   //@Input() received:boolean; // Desde app.component.ts
   @Output() senderStateLogin = new EventEmitter<boolean>();
@@ -70,7 +77,8 @@ export class LoginComponent implements OnInit {
               private usuarioService:UsuarioService,
               private firestore:FirestoreService,private router:Router,
               private http:HttpClient,
-              private processFacesSvc:ProcessFaceService){
+              private processFacesSvc:ProcessFaceService,
+              private modalService:BsModalService){
   }
 
   ngOnInit(): void {}
@@ -84,9 +92,15 @@ export class LoginComponent implements OnInit {
       console.log('Ingresando con exito (Con datos del API)...');
       console.log(res);
       console.log("Identificacion Facial ...");
-      //this.senderStateLogin.emit(true);
-      //this.router.navigate(['/home']);
+      this.OpenFaceDetectionModal();
+      // Eliminar : data-toggle="modal" data-target="#staticBackdrop"
+      //this.senderStateLogin.emit(true); // Funciona
+      //this.router.navigate(['/home']); // Funciona
     }
+  }
+
+  OpenFaceDetectionModal(){
+    this.modalRef = this.modalService.show(ModalFaceDetectionComponent);
   }
 
   login_fn():void {
@@ -147,108 +161,6 @@ export class LoginComponent implements OnInit {
       this.datos.url_foto = data[0].url_foto;
       this.datos.uid = id;
       this.datos.password = null;
-    })
-  }
-
-  detectar(){
-    this.main();
-    //this.senderStateLogin.emit(true);
-    //this.removerVideo();
-  }
-
-  removerVideo(){
-    location.reload();
-  }
-
-  main = async() => {
-    this.context = this.myCanvas.nativeElement.getContext("2d");
-    var video = await navigator.mediaDevices.getUserMedia({video:true});
-
-    // Cargamos los modelos
-    await faceapi.nets.tinyFaceDetector.loadFromUri('/assets/models');
-    await faceapi.nets.faceLandmark68Net.loadFromUri('/assets/models');
-    await faceapi.nets.faceRecognitionNet.loadFromUri('/assets/models');
-
-    // Llamando a la imagen desde el API REST
-    this.loadAndProcessImagenApi();
-
-    //Stream de video
-    this.videoContainer.nativeElement.srcObject = video;
-
-    //Dibujando
-    const reDraw = async()=>{
-      this.context.drawImage(this.videoContainer.nativeElement, 0 ,0 , 640, 480);
-      requestAnimationFrame(reDraw); // Función que informa al navegador que este haga el pintado de los landmarks
-    }
-
-    // Face-api
-    const processFace = async() => {
-      /**
-       * Función que se encarga de procesar la imagen que se envía desde el stream de video
-       */
-      //console.log("INICIO - Procesando imagen que viene desde el stream");
-      //console.log("7.Tipo de dato-mycanvas:",this.myCanvas);
-      //console.log("8.Tipo de dato-mycanvas con nativeElement:",this.myCanvas.nativeElement);
-
-      const detection = await faceapi.detectSingleFace(this.myCanvas.nativeElement, new faceapi.TinyFaceDetectorOptions())
-                        .withFaceLandmarks()
-                        .withFaceDescriptor()
-      //console.log("9.Detecciones desde login.component.ts:",detection); // JSON
-      if(typeof detection == 'undefined') return;
-      try{
-        //this.respuesta = this.processFacesSvc.descriptor(detection); // ERROR AQUI
-        return this.processFacesSvc.descriptor(detection);
-        //console.log(this.respuesta);
-        //console.log("YEAHHHHH");
-        //console.log("FIN - Procesando imagen que viene desde el stream");
-      }catch(error){
-        return error
-        //console.log("10.Error en processFace:",error);
-        //console.log("FIN - Procesando imagen que viene desde el stream");
-      }
-    }
-
-
-
-    var refreshIntervalId = setInterval(() => {
-        var datos = processFace();
-        datos.then((res) => {
-          if (res == undefined){
-            requestAnimationFrame(reDraw);
-            return;
-          }else{
-            this.var_code = res.code;
-            this.detenerSetInterval(refreshIntervalId,res.code);
-            requestAnimationFrame(reDraw);
-          }
-        })},4000);
-}
-
-
-  detenerSetInterval(refreshIntervalId,code){
-    if (code == 1){
-      console.log("Fin del recococimeinto de la imagen. Match exitoso");
-      clearInterval(refreshIntervalId);
-      this.senderStateLogin.emit(true);
-      this.router.navigate(['/home']);
-    }else{
-      return;
-    }
-  }
-
-  async loadAndProcessImagenApi(){
-    const path = 'Usuarios';
-    const user = await this.auth.obtenerUser();
-    const uid = user.uid;
-    this.firestore.getDoc<UserI>(path,uid).subscribe(res =>{
-      this.usuarioService.getImageBase64(res.dni).subscribe(data =>{
-      var imageElement = document.createElement('img');
-      imageElement.classList.add('imageElement');
-      imageElement.src = data[0].encode_PhotoToBase64;
-      imageElement.crossOrigin = 'anonymous';
-      console.log("data:",data[0]);
-      this.processFacesSvc.processFace(imageElement,res.uid);
-      })
     })
   }
 }

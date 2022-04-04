@@ -26,7 +26,8 @@
                 <input type="email" class = "input-field" placeholder = "Email" name = "email" [(ngModel)]="credenciales.correo" id = "email" required>
                 <input type="password" class = "input-field" placeholder = "Contraseña" name = "password" [(ngModel)]="credenciales.password" id = "password" required>
                 <input type="checkbox" class = "check-box"><span>Recordar contraseña</span>
-                <button type = "submit" class = "submit-btn" data-toggle="modal" data-target="#staticBackdrop" (click) = "login_auth()">Acceder</button>
+                <button type = "submit" class = "submit-btn" data-toggle="modal" data-target="#staticBackdrop"  (click) = "login_auth()">Acceder</button>
+                <!--data-toggle="modal" data-target="#staticBackdrop"-->
             </form>
 
             <form  action = "submit" class = "input-group" #asRegistrar id = "registrar" >
@@ -37,8 +38,9 @@
                 <button type = "submit" class = "submit-btn" (click) = "registrar_firebase()">Registrarme</button>
             </form>
         </div>
+
       <!-- Inicio del Modal -->
-        <div class="modal fade mt-5" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!--<div class="modal fade mt-5" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -61,8 +63,8 @@
               </div>
             </div>
           </div>
-        </div>
-    <!-- Fin del Modal -->
+        </div>-->
+      <!-- Fin del Modal -->
     </div>
     <script src = "https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
     <script src = "https://www.gstatic.com/firebasejs/8.7.0/firebase-auth.js"></script>

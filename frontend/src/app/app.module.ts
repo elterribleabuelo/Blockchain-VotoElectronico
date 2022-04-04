@@ -29,9 +29,12 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 
 import { environment } from 'src/environments/environment';
+import { ModalModule,BsModalService } from 'ngx-bootstrap/modal';
+
 
 import { HttpClientModule } from '@angular/common/http';
 import { UsuarioService } from './services/usuario.service';
+import { ModalFaceDetectionComponent } from './modal-face-detection/modal-face-detection.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,7 @@ import { UsuarioService } from './services/usuario.service';
     DataComponent,
     AuxPollComponent,
     AuxPollCreateComponent,
+    ModalFaceDetectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,15 +66,20 @@ import { UsuarioService } from './services/usuario.service';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    HttpClientModule
+    HttpClientModule,
+    ModalModule.forRoot()
   ],
   providers: [
     PollService,
     appRoutingProviders,
-    UsuarioService
+    UsuarioService,
+    BsModalService
   ],
   bootstrap: [
     AppComponent
+  ],
+  entryComponents:[
+    ModalFaceDetectionComponent
   ]
 })
 export class AppModule { }
