@@ -47,9 +47,12 @@ Se recomienda el uso de un entorno virtual usando virtualenv. Así como también
 8. Ahora debemos seguir los siguientes dos pasos:
 
    8.1. Entrar a la carpeta frontend del proyecto y ejecutar los siguientes comandos:
-
+   
+   - `nvm install 12.22.10`
    - `nvm use 12.22.10`
    - `npm install`
+   
+   **Nota**: Antes de esto ya debe tener instalado [Nodejs](https://nodejs.org/es/) en su computador 
 
      8.2. Entrar a la carpeta servicios del proyecto y ejecuta el siguinete comando:
 
