@@ -42,7 +42,7 @@ Se recomienda el uso de un entorno virtual usando virtualenv. Así como también
 
 6. Abrir Ganache y copiar la dirección de una de las cuentas que ofrece. Ejemplo: `0xE193268f9d05E6e2d173ef374dd222B6a9E16732`.
 
-7. Abrir la ruta `localhost:4000` y abrir Metamask desde ahí. Luego conectarnos a `localhost:7545`, dentro de nuestra Wallet vamos al menú principal y seleccionamos la opción `Importar cuenta`; luego seleccionamos la opcion de `Private Key` y pegamos el valor copiado.
+7. Abrir la ruta `localhost:4200` y abrir Metamask desde ahí. Luego conectarnos a `localhost:7545`, dentro de nuestra Wallet vamos al menú principal y seleccionamos la opción `Importar cuenta`; luego seleccionamos la opcion de `Private Key` y pegamos el valor copiado.
 
 8. Ahora debemos seguir los siguientes dos pasos:
 
